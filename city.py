@@ -6,14 +6,25 @@ response=requests.get("http://www.360doc.com/content/14/0327/16/8064468_36417989
 soup=BeautifulSoup(response.text)
 data = BeautifulSoup.get_text(soup)
 data2 = data.split('、')
-list = [i for i in data2 if len(i)<10]
+list = [i for i in data2 if len(i)<20]
+add = data2[21].split('\n')[-1]
+add2 = add.split('：')
+list.extend(add2)
+list.append(data2[-1].split('\n')[0])
 key = ['区', '县', '市', '\n']
-list3 = []
+list3 = [];list6 = []
 for i in list:
+    list5 = i.split('\n')
+    list6.extend(list5)
+for i in list6:
     list2 = [k for k in i]
+
     if '-' in list2:
         num = list2.index('-')
         del list2[:num+1]
+    if '：' in list2:
+        num = list2.index('：')
+        del list2[:num + 1]
     for j in key:
         if j in list2:
             num = list2.index(j)
